@@ -1,5 +1,5 @@
 from django.urls import path, re_path
-from apirest import views
+from api_rest import views
 
 urlpatterns = [
     path('user/', views.UserList.as_view()),
