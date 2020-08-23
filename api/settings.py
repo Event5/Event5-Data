@@ -25,10 +25,11 @@ BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '$0nl&yzh_1_q+efq9aw#^=#*c8as22^w39@3k2qkg*%ceptdep'
+SECRET_KEY = config('SECRET_KEY', default='$0nl&yzh_1_q+efq9aw#^=#*c8as22^w39@3k2qkg*%ceptdep')
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DJANGO_DEBUG', default=True, cast=bool)
 
 ALLOWED_HOSTS = ['*']
 
@@ -83,8 +84,12 @@ WSGI_APPLICATION = 'api.wsgi.application'
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 DATABASES = {
-    'default': dj_database_url.config(default=config('DATABASE_URL'))
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
 }
+
 
 # Todo lo referente a djando-rest-framework
 REST_FRAMEWORK = {
@@ -138,3 +143,6 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Activate Django-Heroku
 django_heroku.settings(locals())
+
+if config('DJANGO_PRODUCTION_ENV', default=False, cast=bool):
+    from .settings_production import *

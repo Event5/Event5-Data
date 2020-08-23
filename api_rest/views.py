@@ -29,6 +29,7 @@ class UserList(APIView):
 
     def post(self, request, format=None):
         serializer = UserESerializer(data=request.data)
+        
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -44,10 +45,12 @@ class UserDetail(generics.RetrieveUpdateDestroyAPIView):
 
 class UserDetail(APIView):
     
-    def get_object(self, request, email, format=None):
+    def get_object(self, email):
         try:
-            return UserE.object.get(email=email)
-        except User.DoesNotExist:
+            print()
+            return UserE.objects.get(email=email)
+
+        except UserE.DoesNotExist:
             raise Http404
     
     def get(self, request, email, format=None):
@@ -56,7 +59,7 @@ class UserDetail(APIView):
         return Response(serializer.data)
     
     def put(self, request, email, format=None):
-        user = self.get_object(emaile)
+        user = self.get_object(email)
         serializer = UserESerializer(user, data=request.data)
         if serializer.is_valid():
             serializer.save()
