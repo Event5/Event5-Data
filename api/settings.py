@@ -93,8 +93,9 @@ DATABASES = {
 
 # Todo lo referente a djando-rest-framework
 REST_FRAMEWORK = {
-    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
-    'DATETIME_FORMAT': '% s000'
+    'DATETIME_INPUT_FORMATS': ("%x%X%z",),
+    'DATETIME_FORMAT': "%x%X%z",
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
 }
 
 # Password validation

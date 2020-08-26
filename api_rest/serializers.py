@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import UserE, Organization, Event, Schedule, ScheduleSpeakers, Speaker, Registry, Associate, EventData
+from .models import UserE, Organization, Event, Schedule, Speaker, Registry, Associate, EventData
 
 class UserESerializer(serializers.ModelSerializer):
     class Meta:
@@ -10,7 +10,8 @@ class UserESerializer(serializers.ModelSerializer):
             'password', 
             'type_user', 
             'email', 
-            'user_status'
+            'user_status',
+            'date_create'
         ]
 
 class EventSerializer(serializers.ModelSerializer):
@@ -22,6 +23,8 @@ class EventSerializer(serializers.ModelSerializer):
             'url',
             'event_start_date',
             'template',
+            'user_id',
+            'organization_id'
         ]
 
 class OrganizationSerializer(serializers.ModelSerializer):
@@ -30,16 +33,21 @@ class OrganizationSerializer(serializers.ModelSerializer):
         fields = [
             'id',
             'name',
+            'user_id'
         ]
+
 
 class ScheduleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Schedule
         fields = [
             'id',
+            'title',
             'description',
+            'date_time',
+            'event_id'
         ]
-
+"""
 class ScheduleSpeakersSerializer(serializers.ModelSerializer):
     class Meta:
         model = ScheduleSpeakers
@@ -48,6 +56,7 @@ class ScheduleSpeakersSerializer(serializers.ModelSerializer):
             'title',
             'description'
         ]
+"""
 
 class SpeakerSerializer(serializers.ModelSerializer):
     class Meta:
@@ -58,7 +67,8 @@ class SpeakerSerializer(serializers.ModelSerializer):
             'biography',
             'role',
             'twitter',
-            'photo_url'
+            'photo_url',
+            'schedule_id'
         ]
 
 class EventDataSerializer(serializers.ModelSerializer):
@@ -68,25 +78,30 @@ class EventDataSerializer(serializers.ModelSerializer):
             'id',
             'logo_url',
             'title',
-            'header_url',
+            'event_image_url',
             'description',
             'background_url',
-            'date_create'
+            'event_id'
         ]
 
 class RegistrySerializer(serializers.ModelSerializer):
     class Meta:
         models = Registry
         fields = [
-            'email'
+            'id',
+            'email',
+            'event_id'
         ]
 
 class AssociateSerializer(serializers.ModelSerializer):
     class Meta:
         models = Associate
         fields = [
+            'id',
             'name',
             'url',
-            'logo_url'
+            'logo_url',
+            'relevance',
+            'event_id'
         ]
 
