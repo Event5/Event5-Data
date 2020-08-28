@@ -23,8 +23,11 @@ class EventSerializer(serializers.ModelSerializer):
             'url',
             'event_start_date',
             'template',
-            'user_id',
-            'organization_id'
+            'users',
+            'organization_id',
+            'conferences',
+            'associates',
+            'public'
         ]
 
 class OrganizationSerializer(serializers.ModelSerializer):
@@ -33,6 +36,7 @@ class OrganizationSerializer(serializers.ModelSerializer):
         fields = [
             'id',
             'name',
+            'url',
             'user_id'
         ]
 
@@ -47,16 +51,6 @@ class ScheduleSerializer(serializers.ModelSerializer):
             'date_time',
             'event_id'
         ]
-"""
-class ScheduleSpeakersSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ScheduleSpeakers
-        fields = [
-            'date_time',
-            'title',
-            'description'
-        ]
-"""
 
 class SpeakerSerializer(serializers.ModelSerializer):
     class Meta:
@@ -73,10 +67,9 @@ class SpeakerSerializer(serializers.ModelSerializer):
 
 class EventDataSerializer(serializers.ModelSerializer):
     class Meta:
-        models = EventData
+        model = EventData
         fields = [
             'id',
-            'logo_url',
             'title',
             'event_image_url',
             'description',
@@ -84,9 +77,11 @@ class EventDataSerializer(serializers.ModelSerializer):
             'event_id'
         ]
 
+
+
 class RegistrySerializer(serializers.ModelSerializer):
     class Meta:
-        models = Registry
+        model = Registry
         fields = [
             'id',
             'email',
@@ -95,7 +90,7 @@ class RegistrySerializer(serializers.ModelSerializer):
 
 class AssociateSerializer(serializers.ModelSerializer):
     class Meta:
-        models = Associate
+        model = Associate
         fields = [
             'id',
             'name',
@@ -105,3 +100,87 @@ class AssociateSerializer(serializers.ModelSerializer):
             'event_id'
         ]
 
+# Dashboard 
+class FilterListSerializer(serializers.ListSerializer):
+    
+    def to_representation(self, data):
+        data = data.filter(type_user='organizer')
+        return super(FilterListSerializer, self).to_representation(data)
+
+
+
+class OrganizerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserE
+        list_serializer_class = FilterListSerializer
+        fields = [
+            'id',
+            'username',
+            'email',
+            'type_user',
+        ]
+
+class EventOrganizerSerializer(serializers.ModelSerializer):
+    users = OrganizerSerializer(many=True, read_only=True)
+    event_data = EventDataSerializer(many=True, read_only=True)
+    
+    class Meta:
+        model = Event
+        fields = [
+            'id',
+            'event_name',
+            'url',
+            'event_start_date',
+            'template',
+            'organization_id',
+            'users',
+            'event_data'
+        ] 
+
+class DashboardAdminSerializer(serializers.ModelSerializer):
+    organization_event = EventOrganizerSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Organization
+        fields = [
+            'id',
+            'name',
+            'url',
+            'user_id',
+            'organization_event'
+        ]
+
+class ScheduleSpeakerSerializer(serializers.ModelSerializer):
+    schedule_speker = SpeakerSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Schedule
+        fields = [
+            'id',
+            'title',
+            'description',
+            'date_time',
+            'event_id',
+            'schedule_speaker'
+        ]
+
+
+class CompleteEventSerializer(serializers.ModelSerializer):
+    event_data = EventDataSerializer(many=True, read_only=True)
+    event_associates = AssociateSerializer(many=True, read_only=True)
+    schedule_event = ScheduleSpeakerSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Event
+        fields = [
+            'id',
+            'event_name',
+            'url',
+            'event_start_date',
+            'template',
+            'user_id',
+            'organization_id',
+            'event_data',
+            'event_associates',
+            'schedule_event'
+        ]

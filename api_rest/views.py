@@ -1,7 +1,7 @@
 from django.shortcuts import render
 
 from .models import UserE, Organization, Event, Schedule, Speaker, Registry, Associate, EventData
-from .serializers import UserESerializer, EventSerializer, OrganizationSerializer, ScheduleSerializer, SpeakerSerializer, EventDataSerializer, RegistrySerializer, AssociateSerializer
+from .serializers import UserESerializer, EventSerializer, OrganizationSerializer, ScheduleSerializer, SpeakerSerializer, EventDataSerializer, RegistrySerializer, AssociateSerializer, OrganizerSerializer, EventOrganizerSerializer, DashboardAdminSerializer,  ScheduleSpeakerSerializer, CompleteEventSerializer
 
 from rest_framework import status, generics
 import django_filters.rest_framework
@@ -52,14 +52,19 @@ class UserDetail(APIView):
         user.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+
+class UserDetailByID(generics.RetrieveUpdateDestroyAPIView):
+    queryset = UserE.objects.all()
+    serializer_class = UserESerializer
+
 # Events
 class EventList(APIView):  
-    """
+    
     def get(self, request, format=None):
        event = Event.objects.all()
        serializer = EventSerializer(event, many=True)
        return Response(serializer.data)
-    """
+
 
     def post(self, request, format=None):
         serializer = EventSerializer(data=request.data)
@@ -73,11 +78,9 @@ class EventListUser(generics.ListAPIView):
     serializer_class = EventSerializer
 
     def get_queryset(self, *arg, **kwargs):
-        value = self.request.query_params.get('user_id', None)
-        print(value)
-        return self.queryset.filter(user_id=value)
-
-
+        value = self.request.query_params.get('users', None)
+        return self.queryset.filter(users=value)
+     
 class EventListOrganization(generics.ListAPIView):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
@@ -244,3 +247,61 @@ class AssociateListEvent(generics.ListAPIView):
 class AssociateDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Associate.objects.all()
     serializer_class = AssociateSerializer
+
+
+# Dashboard
+
+class EventOrganizerDetailByUserID(generics.ListAPIView):
+    queryset = Event.objects.all()
+    serializer_class = EventOrganizerSerializer
+
+    def get_queryset(self, *arg, **kwarg):
+        value = self.request.query_params.get('users', None)
+        return self.queryset.filter(users=value)
+
+class EventOrganizerDetailByUrl(generics.ListAPIView):
+    queryset = Event.objects.all()
+    serializer_class = EventOrganizerSerializer
+
+    def get_queryset(self, *arg, **kwarg):
+        value = self.request.query_params.get('url', None)
+        return self.queryset.filter(url=value)
+
+class DashboardAdminByUrl(generics.ListAPIView):
+    queryset = Organization.objects.all()
+    serializer_class = DashboardAdminSerializer
+
+    def get_queryset(self, *arg, **kwarg):
+        value = self.request.query_params.get('url', None)
+        return self.queryset.filter(url=value)
+
+
+class DashboardAdminByID(generics.ListAPIView):
+    queryset = Organization.objects.all()
+    serializer_class = DashboardAdminSerializer
+
+    def get_queryset(self, *arg, **kwarg):
+        value = self.request.query_params.get('user_id', None)
+        return self.queryset.filter(user_id=value)
+
+
+class CompleteEventByUrl(generics.ListAPIView):
+    queryset = Event.objects.all()
+    serializer_class = CompleteEventSerializer
+
+    def get_queryset(self, *arg, **kwarg):
+        value = self.request.query_params.get('url', None)
+        return self.queryset.filter(url=value)
+
+
+class CompleteEventByID(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Event.objects.all()
+    serializer_class = CompleteEventSerializer
+
+
+class Organizer(APIView):
+    
+    def get(self, request, format=None):
+       associate = UserE.objects.all()
+       serializer = OrganizerSerializer(associate, many=True)
+       return Response(serializer.data)

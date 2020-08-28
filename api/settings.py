@@ -93,8 +93,8 @@ DATABASES = {
 
 # Todo lo referente a djando-rest-framework
 REST_FRAMEWORK = {
-    'DATETIME_INPUT_FORMATS': ("%x%X%z",),
-    'DATETIME_FORMAT': "%x%X%z",
+    'DATETIME_INPUT_FORMATS': ['iso-8601'],
+    'DATETIME_FORMAT': 'iso-8601',
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
 }
 
@@ -120,7 +120,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es-co'
 
 TIME_ZONE = 'UTC'
 

@@ -5,6 +5,7 @@ urlpatterns = [
     # User
     path('user/', views.UserList.as_view()),
     path('user/<email>', views.UserDetail.as_view()),
+    path('user/id/<int:pk>', views.UserDetailByID.as_view()),
     # Event
     path('event/', views.EventList.as_view()),
     re_path(r'^event-user/$', views.EventListUser.as_view()),
@@ -35,4 +36,12 @@ urlpatterns = [
     path('associate/', views.AssociateList.as_view()),
     re_path(r'^associte-event/$', views.AssociateListEvent.as_view()),
     path('associte-detail/<int:pk>', views.AssociateDetail.as_view()),
+    # Dashboard
+    re_path(r'^event-organizer-id/$', views.EventOrganizerDetailByUserID.as_view()),
+    re_path(r'^event-organizer-url/$', views.EventOrganizerDetailByUrl.as_view()),
+    re_path(r'^dashboard-admin-url/$', views.DashboardAdminByUrl.as_view()),
+    re_path(r'^dashboard-admin-id/$', views.DashboardAdminByID.as_view()),
+    re_path(r'^complete-event-url/$', views.CompleteEventByUrl.as_view()),
+    path('complete-event-id/<int:pk>', views.CompleteEventByID.as_view()),
+    path('organaizer/', views.Organizer.as_view())
 ]
