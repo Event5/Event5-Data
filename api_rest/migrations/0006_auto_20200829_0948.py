@@ -30,16 +30,16 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='event',
             name='url',
-            field=models.CharField(max_length=255, unique=True),
+            field=models.CharField(max_length=255),
         ),
         migrations.AlterField(
             model_name='organization',
             name='url',
-            field=models.CharField(max_length=255, unique=True),
+            field=models.CharField(max_length=255),
         ),
         migrations.AlterField(
             model_name='usere',
             name='email',
-            field=models.CharField(max_length=150, unique=True),
+            field=models.CharField(max_length=150),
         ),
     ]
