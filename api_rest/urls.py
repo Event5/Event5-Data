@@ -23,7 +23,7 @@ urlpatterns = [
     # Speaker
     path('speaker/', views.SpeakerList.as_view()),
     re_path(r'^speaker-schedule/$', views.SpeakerListSchedule.as_view()),
-    path('speaker-detail/<int:pk>', views.ScheduleDetail.as_view()),
+    path('speaker-detail/<int:pk>', views.SpeakerDetail.as_view()),
     #  Event Data
     path('event-data/', views.EventDataList.as_view()),
     re_path(r'^event-data-event/$', views.EventDataListEvent.as_view()),
@@ -34,8 +34,8 @@ urlpatterns = [
     path('registry-detail/<int:pk>', views.RegistryDetail.as_view()),
     #  Associate
     path('associate/', views.AssociateList.as_view()),
-    re_path(r'^associte-event/$', views.AssociateListEvent.as_view()),
-    path('associte-detail/<int:pk>', views.AssociateDetail.as_view()),
+    re_path(r'^associate-event/$', views.AssociateListEvent.as_view()),
+    path('associate-detail/<int:pk>', views.AssociateDetail.as_view()),
     # Dashboard
     re_path(r'^event-organizer-id/$', views.EventOrganizerDetailByUserID.as_view()),
     re_path(r'^event-organizer-url/$', views.EventOrganizerDetailByUrl.as_view()),

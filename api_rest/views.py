@@ -281,7 +281,7 @@ class DashboardAdminByID(generics.ListAPIView):
     serializer_class = DashboardAdminSerializer
 
     def get_queryset(self, *arg, **kwarg):
-        value = self.request.query_params.get('user_id', None)
+        value = self.request.query_params.get('users', None)
         return self.queryset.filter(user_id=value)
 
 

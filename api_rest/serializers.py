@@ -15,6 +15,7 @@ class UserESerializer(serializers.ModelSerializer):
         ]
 
 class EventSerializer(serializers.ModelSerializer):
+    
     class Meta:
         model = Event
         fields = [
@@ -24,10 +25,7 @@ class EventSerializer(serializers.ModelSerializer):
             'event_start_date',
             'template',
             'users',
-            'organization_id',
-            'conferences',
-            'associates',
-            'public'
+            'organization_id'
         ]
 
 class OrganizationSerializer(serializers.ModelSerializer):
@@ -151,8 +149,8 @@ class DashboardAdminSerializer(serializers.ModelSerializer):
         ]
 
 class ScheduleSpeakerSerializer(serializers.ModelSerializer):
-    schedule_speker = SpeakerSerializer(many=True, read_only=True)
-
+    schedule_speaker = SpeakerSerializer(many=True, read_only=True)
+    conferences = serializers.IntegerField(source='schedule_speaker.count', read_only=True)
     class Meta:
         model = Schedule
         fields = [
@@ -161,6 +159,7 @@ class ScheduleSpeakerSerializer(serializers.ModelSerializer):
             'description',
             'date_time',
             'event_id',
+            'conferences',
             'schedule_speaker'
         ]
 
@@ -169,7 +168,9 @@ class CompleteEventSerializer(serializers.ModelSerializer):
     event_data = EventDataSerializer(many=True, read_only=True)
     event_associates = AssociateSerializer(many=True, read_only=True)
     schedule_event = ScheduleSpeakerSerializer(many=True, read_only=True)
-
+    public = serializers.IntegerField(source='registrys.count', read_only=True)
+    associates = serializers.IntegerField(source='event_associates.count', read_only=True)
+    
     class Meta:
         model = Event
         fields = [
@@ -178,9 +179,13 @@ class CompleteEventSerializer(serializers.ModelSerializer):
             'url',
             'event_start_date',
             'template',
-            'user_id',
+            'users',
             'organization_id',
+            'associates',
+            'public',
             'event_data',
             'event_associates',
             'schedule_event'
         ]
+
+
