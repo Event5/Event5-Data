@@ -69,6 +69,7 @@ class EventDataSerializer(serializers.ModelSerializer):
         model = EventData
         fields = [
             'id',
+            'logo_url',
             'title',
             'event_image_url',
             'description',
@@ -124,9 +125,9 @@ class EventOrganizerSerializer(serializers.ModelSerializer):
     event_data = EventDataSerializer(many=True, read_only=True)
     public = serializers.IntegerField(source='registrys.count', read_only=True)
     associates = serializers.IntegerField(source='event_associates.count', read_only=True)
-
+    conferences = serializers.IntegerField(source='schedule_event.count', read_only=True)
     class Meta:
-        model = Event
+        model = Event   
         fields = [
             'id',
             'event_name',
@@ -135,6 +136,7 @@ class EventOrganizerSerializer(serializers.ModelSerializer):
             'template',
             'organization_id',
             'published',
+            'conferences',
             'public',
             'associates',
             'users',
@@ -156,7 +158,7 @@ class DashboardAdminSerializer(serializers.ModelSerializer):
 
 class ScheduleSpeakerSerializer(serializers.ModelSerializer):
     schedule_speaker = SpeakerSerializer(many=True, read_only=True)
-    conferences = serializers.IntegerField(source='schedule_speaker.count', read_only=True)
+    speakers = serializers.IntegerField(source='schedule_speaker.count', read_only=True)
     class Meta:
         model = Schedule
         fields = [
@@ -165,7 +167,7 @@ class ScheduleSpeakerSerializer(serializers.ModelSerializer):
             'description',
             'date_time',
             'event_id',
-            'conferences',
+            'speakers',
             'schedule_speaker'
         ]
 
@@ -177,6 +179,7 @@ class CompleteEventSerializer(serializers.ModelSerializer):
     public = serializers.IntegerField(source='registrys.count', read_only=True)
     associates = serializers.IntegerField(source='event_associates.count', read_only=True)
     
+
     class Meta:
         model = Event
         fields = [
