@@ -6,7 +6,7 @@ class UserE(models.Model):
     username = models.CharField(max_length=30)
     password = models.CharField(max_length=100)
     type_user = models.CharField(max_length=50)
-    email = models.CharField(max_length=150, unique=True)
+    email = models.CharField(max_length=150)
     user_status = models.CharField(max_length=10)
     date_create = models.DateTimeField(auto_now_add=True)
     date_modification = models.DateTimeField(auto_now=True)
