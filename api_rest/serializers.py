@@ -15,7 +15,7 @@ class UserESerializer(serializers.ModelSerializer):
         ]
 
 class EventSerializer(serializers.ModelSerializer):
-    
+   
     class Meta:
         model = Event
         fields = [
@@ -25,7 +25,8 @@ class EventSerializer(serializers.ModelSerializer):
             'event_start_date',
             'template',
             'users',
-            'organization_id'
+            'organization_id',
+            'published'
         ]
 
 class OrganizationSerializer(serializers.ModelSerializer):
@@ -121,7 +122,9 @@ class OrganizerSerializer(serializers.ModelSerializer):
 class EventOrganizerSerializer(serializers.ModelSerializer):
     users = OrganizerSerializer(many=True, read_only=True)
     event_data = EventDataSerializer(many=True, read_only=True)
-    
+    public = serializers.IntegerField(source='registrys.count', read_only=True)
+    associates = serializers.IntegerField(source='event_associates.count', read_only=True)
+
     class Meta:
         model = Event
         fields = [
@@ -131,6 +134,9 @@ class EventOrganizerSerializer(serializers.ModelSerializer):
             'event_start_date',
             'template',
             'organization_id',
+            'published',
+            'public',
+            'associates',
             'users',
             'event_data'
         ] 
