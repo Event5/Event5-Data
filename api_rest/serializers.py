@@ -10,8 +10,7 @@ class UserESerializer(serializers.ModelSerializer):
             'password', 
             'type_user', 
             'email', 
-            'user_status',
-            'date_create'
+            'user_status'
         ]
 
 class EventSerializer(serializers.ModelSerializer):

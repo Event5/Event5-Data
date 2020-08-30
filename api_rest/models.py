@@ -17,7 +17,7 @@ class UserE(models.Model):
 class Event(models.Model):
     event_name = models.CharField(max_length=100)
     url = models.CharField(max_length=255)
-    event_start_date = models.DateTimeField()
+    event_start_date = models.CharField(max_length=100)
     template = models.IntegerField()
     users = models.ManyToManyField('UserE', related_name='users', db_table='user_event')
     organization_id = models.ForeignKey('Organization', related_name='organization_event', on_delete=models.CASCADE)
