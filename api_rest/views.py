@@ -14,11 +14,6 @@ from rest_framework import status, generics
 # User
 class UserList(APIView):
 
-    def get(self, request, format=None):
-       user = UserE.objects.all()
-       serializer = UserESerializer(user, many=True)
-       return Response(serializer.data)
-
     def post(self, request, format=None):
         serializer = UserESerializer(data=request.data)
         if serializer.is_valid():
@@ -59,12 +54,6 @@ class UserDetailByID(generics.RetrieveUpdateDestroyAPIView):
 
 # Events
 class EventList(APIView):  
-    
-    def get(self, request, format=None):
-       event = Event.objects.all()
-       serializer = EventSerializer(event, many=True)
-       return Response(serializer.data)
-
 
     def post(self, request, format=None):
         serializer = EventSerializer(data=request.data)
@@ -221,12 +210,6 @@ class RegistryDetail(generics.RetrieveUpdateDestroyAPIView):
 
 # Associate
 class AssociateList(APIView):
-    
-    def get(self, request, format=None):
-       associate = Associate.objects.all()
-       serializer = AssociateSerializer(associate, many=True)
-       return Response(serializer.data)
-
     def post(self, request, format=None):
         serializer = AssociateSerializer(data=request.data)
         if serializer.is_valid():
@@ -297,11 +280,3 @@ class CompleteEventByUrl(generics.ListAPIView):
 class CompleteEventByID(generics.RetrieveUpdateDestroyAPIView):
     queryset = Event.objects.all()
     serializer_class = CompleteEventSerializer
-
-
-class Organizer(APIView):
-    
-    def get(self, request, format=None):
-       associate = UserE.objects.all()
-       serializer = OrganizerSerializer(associate, many=True)
-       return Response(serializer.data)

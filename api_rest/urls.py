@@ -43,5 +43,5 @@ urlpatterns = [
     re_path(r'^dashboard-admin-id/$', views.DashboardAdminByID.as_view()),
     re_path(r'^complete-event-url/$', views.CompleteEventByUrl.as_view()),
     path('complete-event-id/<int:pk>', views.CompleteEventByID.as_view()),
-    path('organaizer/', views.Organizer.as_view())
+    
 ]
